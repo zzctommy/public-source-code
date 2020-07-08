@@ -18,7 +18,6 @@ int BSGS(int k,int a,int p,int b) {
 	map<int,int>mp;
 	int m=ceil(sqrt(p)),t=1;
 	for(rint i=1;i<=m;++i)t=t*a%p,mp[t*b%p]=i;
-	mp[b%p]=0;
 	for(rint i=1;i<=m;++i) {
 		k=k*t%p;
 		if(mp.find(k)!=mp.end()) {
