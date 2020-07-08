@@ -66,7 +66,7 @@ signed main() {
 	for(rint i=1;i<=n;++i) {
 		double X=p[i].x,Y=p[i].y;
 		p[i].x=X*cos(A)+Y*sin(A);
-		p[i].y=X*sin(A)-Y*cos(A);
+		p[i].y=Y*cos(A)-X*sin(A);
 		p[i].x/=P;
 	}
 	min_circle();
