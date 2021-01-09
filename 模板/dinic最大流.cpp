@@ -1,61 +1,53 @@
-#include<bits/stdc++.h>
-using namespace std;
-typedef long long LL;
-#define rint register int
-//#define getchar() (p1==p2&&(p2=(p1=buf)+fread(buf,1,1<<21,stdin),p1==p2)?EOF:*p1++)
-//char buf[1<<21],*p1=buf,*p2=buf;
-inline int rd() {
-    int x=0,f=1;char ch=getchar();
-    while(!isdigit(ch)) {if(ch=='-')f=-1;ch=getchar();}
-    while(isdigit(ch))x=x*10+(ch^48),ch=getchar();
-    return x*f;
+template<int NN,int MM>
+struct Dinic{
+
+static const int N=NN+5;
+static const int M=(MM<<1)+5;
+static const int inf=1<<30;
+
+int hed[N],et,S,T;
+struct edge{int fl,nx,to;}e[M];
+int dis[N],cur[N];
+Dinic(){et=1,memset(hed,0,sizeof(hed));}
+void clear(){Dinic();}
+void addedge(int u,int v,int fl){e[++et].nx=hed[u],hed[u]=et,e[et].fl=fl,e[et].to=v;}
+void adde(int u,int v,int fl){addedge(u,v,fl),addedge(v,u,0);}
+
+bool bfs(int s,int t){
+	queue<int>q;
+	for(int i=1;i<=N;++i)dis[i]=0,cur[i]=hed[i];
+	q.push(s),dis[s]=1;
+	while(!q.empty()){
+		int u=q.front();q.pop();
+		for(int i=hed[u];i;i=e[i].nx){
+			int v=e[i].to;
+			if(e[i].fl&&!dis[v]){
+				dis[v]=dis[u]+1,q.push(v);
+				if(v==t)return 1;
+			}
+		}
+	}
+	return 0;
 }
-const int N=55010;
-const int M=N*8;
-const int inf=1e8;
-int n,m,s,t,sum;
-int head[N],num_edge=1;
-int dep[N],cur[N],maxflow;
-struct edge {
-    int nxt,val,to;
-}e[M];
-void addedge(int from,int to,int val) {
-    ++num_edge;
-    e[num_edge].nxt=head[from];
-    e[num_edge].to=to;
-    e[num_edge].val=val;
-    head[from]=num_edge;
+int dfs(int u,int fl){
+	if(u==T)return fl;
+	int rl=0,used=0;
+	for(int i=cur[u];i;i=e[i].nx){
+		int v=e[i].to;cur[u]=i;
+		if(e[i].fl&&dis[v]==dis[u]+1){
+			rl=dfs(v,min(e[i].fl,fl-used));
+			if(rl){
+				e[i].fl-=rl,e[i^1].fl+=rl,used+=rl;
+				if(used==fl)break;
+			}
+		}
+	}
+	return used;
 }
-bool bfs(){
-    for(rint i=1;i<=t;++i)
-        dep[i]=0,cur[i]=head[i];
-    dep[s]=1;queue<int>q;q.push(s);
-    while(!q.empty()) {
-        int u=q.front();q.pop();
-        for(rint i=head[u];i;i=e[i].nxt) {
-            int v=e[i].to;
-            if(!dep[v]&&e[i].val)
-                dep[v]=dep[u]+1,q.push(v);
-        }
-    }
-    return dep[t]>0;
+int maxflow(){
+	int res=0;
+	while(bfs(S,T))res+=dfs(S,inf);
+	return res;
 }
-int dfs(int u,int flow) {
-    if(u==t){maxflow+=flow;return flow;}
-    int used=0,rlow;
-    for(rint i=cur[u];i;i=e[i].nxt) {
-        int v=e[i].to;cur[u]=i;
-        if(e[i].val&&dep[v]==dep[u]+1) {
-            rlow=dfs(v,min(e[i].val,flow-used));
-            if(rlow) {
-                used+=rlow;
-                e[i].val-=rlow;
-                e[i^1].val+=rlow;
-                if(used==flow)break;
-            }
-        }
-    }
-    return used;
-}
-signed main() {
-}
+
+};

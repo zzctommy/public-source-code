@@ -1,17 +1,3 @@
-#include<bits/stdc++.h>
-using namespace std;
-typedef long long LL;
-typedef unsigned int uint;
-#define rint register int
-#define pb push_back
-//#define getchar() (p1==p2&&(p2=(p1=buf)+fread(buf,1,1<<21,stdin),p1==p2) EOF:*p1++)
-//char buf[1<<21],*p1=buf,*p2=buf;
-inline int rd() {
-    int x=0,f=1;char ch=getchar();
-    while(!isdigit(ch)) {if(ch=='-')f=-1;ch=getchar();}
-    while(isdigit(ch))x=x*10+(ch^48),ch=getchar();
-    return x*f;
-}
 const int N=2010;
 const double eps=1e-9;
 double randeps() {return (rand()/(double)RAND_MAX-0.5)*eps;}
@@ -54,14 +40,4 @@ void convex() {
 		for(rint j=1;j<=th;++j)cv[j]=h[j];
 		cnt=th,th=0;
 	}
-}
-void calc() {for(rint i=1;i<=cnt;++i)ans+=cv[i].area();}
-signed main() {
-	srand(time(0));
-	n=rd();
-	for(rint i=1;i<=n;++i)
-		scanf("%lf%lf%lf",&p[i].x,&p[i].y,&p[i].z),p[i].shake();
-	convex();calc();
-	printf("%.3lf\n",ans);
-	return 0;
 }

@@ -1,0 +1,2 @@
+#include<bits/stdc++.h>
+using namespace std;int n,m,c,a[10000],u,v,s;main(){for(cin>>n>>m;u<n;a[u++]*=2)cin>>a[u];for(;m--;a[--v]+=s)cin>>u>>v>>s,a[--u]+=s;for(sort(a,a+n);n--;)c+=n&1?a[n]:-a[n];cout<<c/2;}
